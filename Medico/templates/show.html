@@ -15,6 +15,11 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <style>
+    #c{
+        text-align: left;
+        font-family: Poppins-Bold;
+        padding-left: -50px;
+    }
     #b{
         padding-top: 10px;
     }
@@ -39,58 +44,28 @@
 					<img src="{% static 'images/img-01.png' %}" alt="IMG">
 				</div>
 
-				<form class="login100-form validate-form" method="post">
+				<form action="data" method="post" class="login100-form validate-form">
                     {%csrf_token%}
 					<span class="login100-form-title">
                         Patient, {{fname1}}
 					</span>
-                    <u><strong style="padding-left: 10px;">Genral Details</strong></u>  
-					<div id='b'>
-                        
-						<p class="input100"style="padding-top:15px;"><strong>First name:   </strong>{{fname1}}</p>
-					</div>
-                    <div >
-						<p class="input100"style="padding-top:15px;"><strong>Last name:   </strong>{{lname1}}</p>
-					</div>
-					
-                    <div >
-						<p class="input100"style="padding-top:15px;"><strong>Email:   </strong>{{email1}}</p>
-					</div>
-
-					<div >
-						<p class="input100"style="padding-top:15px;"><strong>Gender:   </strong>{{gen1}}</p>
-					</div>
-                    <div >
-						<p class="input100"style="padding-top:15px;"><strong>Height:   </strong>{{height1}}</p>
-                    </div>
-                    <div>
-						<p class="input100"style="padding-top:15px;"><strong>Weight:   </strong>{{weight1}}</p>
-					</div>
-                    <div >
-						<p class="input100"style="padding-top:15px;"><strong>Blood Group:   </strong>{{bgroup1}}</p>
-					</div>
-					<div>
-						<p class="input100"style="padding-top:15px;"><strong>Area:   </strong>{{address1}}  </p>
-					</div>
-                    <div>
-						<p class="input100"style="padding-top:15px;"><strong>Allergy:   </strong>{{allergy1}}  </p>
-					</div>
-					<div>
-						<p class="input100"style="padding-top:15px;"><strong>No:   </strong>{{no}}  </p>
-                    </div>
-                </form>
-                <form action="vdec" method="post" class="login100-form validate-form">
-                    {%csrf_token%}
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Create Patient
-						</button>
-					</div>
-					<div class="text-center p-t-136">
-						<a class="txt2" href="dregister.html">
+					<div class="text-center p-t-136" id='c'>
+						<!-- <a class="txt2" href="dregister.html">
 							
-							<!-- <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i> -->
-						</a>
+							<!-- <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                         </a> -->
+                         {% for p in data1 %}
+                         {% for k,v in p.items %}
+                            {% ifnotequal "" v %}
+                                <strong>{{k}} : </strong><p>{{v}}</p><br>
+                            {% endifnotequal %}
+                         {% endfor %}
+                            {% endfor %}
+                    </div>
+                    <div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Add visit
+						</button>
 					</div>
 				</form>
 			</div>  
@@ -111,4 +86,5 @@
 	<script src="{% static 'js/main.js' %}"></script>
 
 </body>
-</html>
+</html> 
+

@@ -10,4 +10,7 @@ urlpatterns = [
     path('pregister',views.pregister,name='pregister'),
     path('nregister',views.nregister,name='nregister'),
     path('vregister',views.vregister,name='vregister'),
+    path('vdec',views.vdec,name='vdec'),
+    path('data',views.data,name='data'),
+    path('visit',views.visit,name='visit'),
 ]
