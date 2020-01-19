@@ -13,4 +13,5 @@ urlpatterns = [
     path('vdec',views.vdec,name='vdec'),
     path('data',views.data,name='data'),
     path('visit',views.visit,name='visit'),
+    path('predict',views.predict,name='predict'),
 ]

@@ -57,9 +57,10 @@
                          {% for p in data1 %}
                          {% for k,v in p.items %}
                             {% ifnotequal "" v %}
-                                <strong>{{k}} : </strong><p>{{v}}</p><br>
+								<strong>{{k}} : </strong><p>{{v}}</p><br>
                             {% endifnotequal %}
-                         {% endfor %}
+						 {% endfor %}
+						 <p>---------------------------------</p>
                             {% endfor %}
                     </div>
                     <div class="container-login100-form-btn">

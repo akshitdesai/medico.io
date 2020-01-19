@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="{% static 'images/icons/favicon.ico' %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+</head>
+<style>
+    .sel{
+        font-family: Poppins-Medium;
+        font-size: 15px;
+        color:#666666;
+        display: block;
+        width: 100%;
+        background:#e6e6e6;
+        height: 50px;
+        border-radius: 25px;
+        padding: 0 30px 0 68px;
+    }
+</style>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-pic js-tilt" data-tilt>
+					<img src="{% static 'images/img-01.png' %}" alt="IMG">
+				</div>
+
+				<form class="login100-form validate-form" action="predict" method="post">
+                    {%csrf_token%}
+					<span class="login100-form-title">
+						Predict Diabetes
+					</span>
+
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l1" placeholder="Number of times pregnant">
+					</div>
+
+					<div class="wrap-input100 validate-input" >
+						<input class="input100" type="text" name="l2" placeholder="Plasma glucose concentration 2 hr..">
+					</div>
+					
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l3" placeholder="Diastolic blood pressure (mm Hg)">
+					</div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l4" placeholder="Triceps skin fold thickness (mm)">
+					</div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l5" placeholder="2-Hour serum insulin (mu U/ml)">
+					</div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l6" placeholder="Body mass index (weight in kg/(height in m)^2)">
+					</div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l7" placeholder="Diabetes pedigree function">
+					</div>
+					<div class="wrap-input100 validate-input">
+						<input class="input100" type="text" name="l8" placeholder="Age (years)">
+					</div>
+
+
+
+
+					
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Create Patient
+						</button>
+					</div>
+					<div class="text-center p-t-136">
+						<a class="txt2" href="dregister.html">
+							
+							<!-- <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i> -->
+						</a>
+					</div>
+				</form>
+			</div>  
+		</div>
+	</div>
+	
+	
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+	<script src="{% static 'vendor/tilt/tilt.jquery.min.js' %}"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+	<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

@@ -12,6 +12,15 @@ import qrcode
 from patient.models import patient
 import json
 
+import numpy as np
+import pandas
+from sklearn import model_selection
+from sklearn.linear_model import LogisticRegression
+import pickle
+
+from keras.models import load_model
+from keras.preprocessing.image import ImageDataGenerator
+
 count = 1001
 # Create your views here.
 def index(request):
@@ -59,8 +68,12 @@ def dregister(request):
 def pregister(request):
     if request.POST.get('patient')=='new patient':
         return render(request,'nregister.html')
-    else:
+    elif request.POST.get('patient')=='view patient':
         return render(request,'vregister.html')
+    else:
+        return render(request,'dispatient.html')
+
+
 
 def nregister(request):
     return render(request,'nregister.html')
@@ -81,79 +94,79 @@ def vregister(request):
     qid= count
     count+=1
     request.session['qid']=qid
-    # fromaddr = "codestromer@gmail.com"
-    # pwd = "Harikrushna123"
+    fromaddr = "codestromer@gmail.com"
+    pwd = "Harikrushna123"
 
-    # toaddr = "akshitdesai2000@gmail.com" #str("akshitdesai2000@gmail.com")
-    # reciver = "Akshit Desai" #str("Akshit Desai")
+    toaddr = "akshitdesai2000@gmail.com" #str("akshitdesai2000@gmail.com")
+    reciver = "Akshit Desai" #str("Akshit Desai")
     
-    # qr = qrcode.QRCode(
-    #     version=1,
-    #     error_correction=qrcode.constants.ERROR_CORRECT_L,
-    #     box_size=10,
-    #     border=4,
-    # )
-    # qr.add_data(str(qid))
-    # qr.make(fit=True)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    qr.add_data(str(qid))
+    qr.make(fit=True)
 
-    # img = qr.make_image(fill_color="black", back_color="white")
-    # img.save(str(qid)+'.jpg')
-    # img_name = str(qid)+'.jpg'
+    img = qr.make_image(fill_color="black", back_color="white")
+    img.save(str(qid)+'.jpg')
+    img_name = str(qid)+'.jpg'
 
-    # # instance of MIMEMultipart 
-    # msg = MIMEMultipart() 
+    # instance of MIMEMultipart 
+    msg = MIMEMultipart() 
 
-    # # storing the senders email address 
-    # msg['From'] = fromaddr 
+    # storing the senders email address 
+    msg['From'] = fromaddr 
 
-    # # storing the receivers email address 
-    # msg['To'] = toaddr 
+    # storing the receivers email address 
+    msg['To'] = toaddr 
 
-    # # storing the subject 
-    # msg['Subject'] = "Registered"
+    # storing the subject 
+    msg['Subject'] = "Registered"
 
-    # # string to store the body of the mail 
-    # body = "Hey "+reciver+",\n You have registered on Medico.io"
+    # string to store the body of the mail 
+    body = "Hey "+reciver+",\n You have registered on Medico.io"
 
-    # # attach the body with the msg instance 
-    # msg.attach(MIMEText(body, 'plain')) 
+    # attach the body with the msg instance 
+    msg.attach(MIMEText(body, 'plain')) 
 
-    # # open the file to be sent 
-    # filename = img_name
-    # attachment = open(img_name, "rb") 
+    # open the file to be sent 
+    filename = img_name
+    attachment = open(img_name, "rb") 
 
-    # # instance of MIMEBase and named as p 
-    # p = MIMEBase('application', 'octet-stream') 
+    # instance of MIMEBase and named as p 
+    p = MIMEBase('application', 'octet-stream') 
 
-    # # To change the payload into encoded form 
-    # p.set_payload((attachment).read()) 
+    # To change the payload into encoded form 
+    p.set_payload((attachment).read()) 
 
-    # # encode into base64 
-    # encoders.encode_base64(p) 
+    # encode into base64 
+    encoders.encode_base64(p) 
 
-    # p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
 
-    # # attach the instance 'p' to instance 'msg' 
-    # msg.attach(p) 
+    # attach the instance 'p' to instance 'msg' 
+    msg.attach(p) 
 
-    # # creates SMTP session 
-    # #s = smtplib.SMTP('smtp.gmail.com', 587)
-    # s= smtplib.SMTP('smtp.gmail.com:587')
+    # creates SMTP session 
+    #s = smtplib.SMTP('smtp.gmail.com', 587)
+    s= smtplib.SMTP('smtp.gmail.com:587')
 
-    # # start TLS for security 
-    # s.starttls() 
+    # start TLS for security 
+    s.starttls() 
 
-    # # Authentication 
-    # s.login(fromaddr,pwd) 
+    # Authentication 
+    s.login(fromaddr,pwd) 
 
-    # # Converts the Multipart msg into a string 
-    # text = msg.as_string() 
+    # Converts the Multipart msg into a string 
+    text = msg.as_string() 
 
-    # # sending the mail 
-    # s.sendmail(fromaddr, toaddr, text) 
-    # print(reciver+"  Done")
-    # # terminating the session 
-    # s.quit()
+    # sending the mail 
+    s.sendmail(fromaddr, toaddr, text) 
+    print(reciver+"  Done")
+    # terminating the session 
+    s.quit()
     gen1='M'
     en =  patient(fname=fname1,lname=lname1,Email=email1,height=height1,weight=weight1,gender=gen1,address=address1,allergy=allergy1,qid=qid,no=no)
     en.save()
@@ -218,3 +231,16 @@ def visit(request):
 # def dlogin(request):
 #     return render(request,'login.html')
     
+def predict(request):
+    l1 = float(request.POST.get('l1'))
+    l2 = float(request.POST.get('l2'))
+    l3 = float(request.POST.get('l3'))
+    l4 = float(request.POST.get('l4'))
+    l5 = float(request.POST.get('l5'))
+    l6 = float(request.POST.get('l6'))
+    l7 = float(request.POST.get('l7'))
+    l8 = float(request.POST.get('l8'))
+    from .pre import predict_dia_sym
+    temp=[l1,l2,l3,l4,l5,l6,l7,l8]
+    tested = predict_dia_sym(temp)
+    return render(request,'final.html',{'tested':tested[0][0]})
